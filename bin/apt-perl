@@ -1,0 +1,109 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use AptPkg::Cache;
+use Switch;
+
+my $cache = AptPkg::Cache->new;
+my $query = shift or die("No action given");
+my $packagename = shift or die("No packagename given");
+my $package = $cache->{$packagename};
+
+unless($package) {
+	print "E: Package not found: $packagename";
+	exit(100);
+}
+
+sub revdeps {
+	my $rdepsref = shift;
+	my $depsref;
+	my $parent;
+
+	foreach(@$rdepsref) {
+		undef($parent);
+		$parent->{name} = $_->{ParentPkg}{Name};
+		$parent->{ver} = $_->{ParentVer}{VerStr};
+		$parent->{current_state} = $cache->{$_->{ParentPkg}{Name}}->{CurrentState};
+		$parent->{selected_state} = $cache->{$_->{ParentPkg}{Name}}->{SelectedState};
+		$parent->{deptype} = $_->{DepType};
+		$parent->{targetname} = $_->{TargetPkg}{Name};
+		if ($_->{TargetVer}) {
+			$parent->{depsign} = $_;
+			$parent->{depver} = $_;
+		}
+		$depsref->{$parent->{name}} = $parent;
+	}
+	return($depsref);
+}
+
+sub why {
+	my $revdeps = revdeps(shift);
+	my $why;
+	foreach(keys(%$revdeps)) {
+		if ($revdeps->{$_}->{current_state} eq 'Installed' and $revdeps->{$_}->{deptype} !~ /^(Conflicts|Replaces|Obsoletes)$/) {
+			$why->{$_} = $revdeps->{$_};
+		}
+	}
+	return($why);
+}
+
+sub why_not {
+	my $revdeps = revdeps(shift);
+	my $why_not;
+	foreach(keys(%$revdeps)) {
+		if ($revdeps->{$_}->{current_state} eq 'Installed' and $revdeps->{$_}->{deptype} =~ /^(Conflicts|Replaces|Obsoletes)$/) {
+			$why_not->{$_} = $revdeps->{$_};
+		}
+	}
+	return($why_not);
+}
+
+sub short_states {
+	my $pkg = shift;
+	my $state = '';
+	switch($pkg->{selected_state}) {
+		case('Unkwnon') {
+			$state .= ' ';
+		} case('Install') {
+			$state .= 'i';
+		} case('Hold') {
+			$state .= 'h';
+		} case('DeInstall') {
+			$state .= 'r';
+		} case('Purge') {
+			$state .= 'p';
+		}
+	}
+	switch($pkg->{current_state}) {
+		case('Installed') {
+			$state .= 'i';
+		} case('UnPacked') {
+			$state .= 'u';
+		} case('HalfConfigured') {
+			$state .= 'f';
+		} case('HalfInstalled') {
+			$state .= 'h';
+		} case('ConfigFiles') {
+			$state .= 'c';
+		} case('NotInstalled') {
+			$state .= ' ';
+		}
+	}
+	return($state);
+}
+
+
+sub print_deps {
+	my $deps = shift;
+	foreach(keys(%$deps)) {
+		printf "%-2s  %-30s %-15s %s\n", short_states($deps->{$_}), $deps->{$_}->{name}, $deps->{$_}->{deptype}, $deps->{$_}->{targetname};
+	}
+}
+
+if ($query eq 'why') {
+	print_deps(why($package->{RevDependsList}));
+} elsif ($query eq 'why-not') {
+	print_deps(why_not($package->{RevDependsList}));
+} elsif ($query eq 'rdeps') {
+	print_deps(revdeps($package->{RevDependsList}));
+}
