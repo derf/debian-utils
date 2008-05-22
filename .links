@@ -1,1 +1,1 @@
-bin/apt-perl ../packages/debian/bin/apt-perl
+soft bin/apt-perl ../packages/debian/bin/apt-perl
