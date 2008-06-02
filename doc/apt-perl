@@ -1,0 +1,14 @@
+apt-perl - reverse dependency displayer using ApgPkg::Cache
+
+Usage: apt-perl command packagename
+
+command may be one of
+
+	why
+		Show dependencies that justify the installation of a package
+
+	why-not
+		Show dependencies that prohibit the installation of a package
+
+	rdeps
+		Show all reverse dependencies of a package
