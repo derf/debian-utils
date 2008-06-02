@@ -107,3 +107,36 @@ if ($query eq 'why') {
 } elsif ($query eq 'rdeps') {
 	print_deps(revdeps($package->{RevDependsList}));
 }
+
+__END__
+
+=head1 NAME
+
+apt-perl - reverse dependency displayer using ApgPkg::Cache
+
+=head1 SYNOPSIS
+
+apt-perl I<command> I<package>
+
+=head1 DESCRIPTION
+
+B<apt-perl> displays various informations based on a I<package>s reverse
+dependencies
+
+I<command> may be one of:
+
+=over
+
+=item why
+
+Show dependencies that justify the installation of a package
+
+=item why-not
+
+Show dependencies that prohibit the installation of a package
+
+=item rdeps
+
+Show all reverse dependencies of a package
+
+=back
