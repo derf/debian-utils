@@ -116,7 +116,7 @@ apt-perl - reverse dependency displayer using ApgPkg::Cache
 
 =head1 SYNOPSIS
 
-apt-perl I<command> I<package>
+B<apt-perl> I<command> I<package>
 
 =head1 DESCRIPTION
 
