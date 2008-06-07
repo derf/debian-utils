@@ -123,6 +123,13 @@ B<apt-perl> I<command> I<package>
 B<apt-perl> displays various informations based on a I<package>s reverse
 dependencies
 
+The output is prefixed by two charactes, the former representing the desired
+package state, the latter the current state.
+
+The states are I<i>nstall, I<h>old, I<r>emove (deinstall), I<p>urge,
+I<u>npacked, halI<f> configured, I<h>alf installed, I<c>onfigfiles installed.
+An empty field means not installed.
+
 I<command> may be one of:
 
 =over
