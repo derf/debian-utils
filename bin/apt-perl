@@ -10,7 +10,7 @@ my $packagename = shift or die("No packagename given");
 my $package = $cache->{$packagename};
 
 unless($package) {
-	print "E: Package not found: $packagename";
+	print STDERR "E: Package not found: $packagename\n";
 	exit(100);
 }
 
