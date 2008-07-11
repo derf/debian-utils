@@ -5,8 +5,8 @@ use AptPkg::Cache;
 use Switch;
 
 my $cache = AptPkg::Cache->new;
-my $query = shift or die("No action given");
-my $packagename = shift or die("No packagename given");
+my $packagename = pop or dir("No packagename given");
+my $query = shift || '';
 my $package = $cache->{$packagename};
 
 unless($package) {
@@ -100,12 +100,10 @@ sub print_deps {
 	}
 }
 
-if ($query eq 'why') {
-	print_deps(why($package->{RevDependsList}));
-} elsif ($query eq 'why-not') {
+if ($query eq 'not') {
 	print_deps(why_not($package->{RevDependsList}));
-} elsif ($query eq 'rdeps') {
-	print_deps(revdeps($package->{RevDependsList}));
+} else {
+	print_deps(why($package->{RevDependsList}));
 }
 
 __END__
