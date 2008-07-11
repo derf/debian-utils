@@ -5,7 +5,7 @@ use AptPkg::Cache;
 use Switch;
 
 my $cache = AptPkg::Cache->new;
-my $packagename = pop or dir("No packagename given");
+my $packagename = pop or die("No packagename given");
 my $query = shift || '';
 my $package = $cache->{$packagename};
 
@@ -110,15 +110,15 @@ __END__
 
 =head1 NAME
 
-apt-perl - reverse dependency displayer using AptPkg::Cache
+apt-why - filtered reverse dependency displayer using AptPkg::Cache
 
 =head1 SYNOPSIS
 
-B<apt-perl> I<command> I<package>
+B<apt-why> [ B<not> ] I<package>
 
 =head1 DESCRIPTION
 
-B<apt-perl> displays various informations based on a I<package>s reverse
+B<apt-why> displays various informations based on a I<package>s reverse
 dependencies
 
 The output is prefixed by two charactes, the former representing the desired
@@ -128,20 +128,6 @@ The states are I<i>nstall, I<h>old, I<r>emove (deinstall), I<p>urge,
 I<u>npacked, halI<f> configured, I<h>alf installed, I<c>onfigfiles installed.
 An empty field means not installed.
 
-I<command> may be one of:
-
-=over
-
-=item why
-
-Show dependencies that justify the installation of a package
-
-=item why-not
-
-Show dependencies that prohibit the installation of a package
-
-=item rdeps
-
-Show all reverse dependencies of a package
-
-=back
+If B<not> is specified, reverse dependencies prohibiting the install of
+I<package> are shown. Else, reverse dependencies justifying the install
+of I<package> are shown
