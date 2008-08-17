@@ -1,0 +1,14 @@
+#compdef apt-why
+## Completion for apt-why
+## Daniel Friesel <derf@derf.homelinux.org>
+## https://derf.homelinux.org/~derf/dotfiles/completion/_apt-why
+## see also: https://derf.homelinux.org/~derf/code/apt-why
+
+typeset -a arguments
+
+arguments=(
+	'--not'
+	'*:package:_deb_packages "" avail'
+)
+
+_arguments -s $arguments
