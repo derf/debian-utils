@@ -104,6 +104,11 @@ sub print_deps {
 	}
 }
 
+print "State: $package->{CurrentState}\n";
+if ($package->{Flags} =~ /Essential/) {
+	print "Essential: yes\n";
+}
+
 if ($not) {
 	print_deps(why_not($package->{RevDependsList}));
 } else {
