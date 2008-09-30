@@ -1,3 +1,4 @@
+## vim:ft=zsh
 ## Debian package system (aptitude/apt-get, apt-cache, dpkg)
 
 # Search the packages list
@@ -12,33 +13,33 @@ alias apsh='aptitude show'
 alias dps='dpkg --status'
 
 # Update packages list
-alias agu='sudo apt-get update'
-alias apu='sudo aptitude update'
+salias agu='apt-get update'
+salias apu='aptitude update'
 
 # Update packages
-alias ags='sudo apt-get upgrade'
-alias agf='sudo apt-get dist-upgrade'
-alias aps='sudo aptitude safe-upgrade'
-alias apf='sudo aptitude full-upgrade'
+salias ags='apt-get upgrade'
+salias agf='apt-get dist-upgrade'
+salias aps='aptitude safe-upgrade'
+salias apf='aptitude full-upgrade'
 
 # Install packages
-alias agi='sudo apt-get install'
-alias api='sudo aptitude install'
-alias dpi='sudo dpkg --install'
+salias agi='apt-get install'
+salias api='aptitude install'
+salias dpi='dpkg --install'
 
 # Clean packages cache
-alias agc='sudo apt-get clean'
-alias apc='sudo aptitude clean'
+salias agc='apt-get clean'
+salias apc='aptitude clean'
 
 # Remove/Purge packages
-alias agar='sudo apt-get autoremove'
-alias agp='sudo apt-get purge'
-alias agr='sudo apt-get remove'
-alias dpp='sudo dpkg --purge'
-alias dpr='sudo dpkg --remove'
+salias agar='apt-get autoremove'
+salias agp='apt-get purge'
+salias agr='apt-get remove'
+salias dpp='dpkg --purge'
+salias dpr='dpkg --remove'
 
 
 # Configure packages
-alias dprc='sudo dpkg-reconfigure'
+salias dprc='dpkg-reconfigure'
 
 alias acp='apt-cache policy'
