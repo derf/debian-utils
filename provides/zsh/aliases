@@ -23,7 +23,7 @@ salias aps='aptitude safe-upgrade'
 salias apf='aptitude full-upgrade'
 
 # Install packages
-salias agi='apt-get install'
+salias agi='noglob apt-get install'
 salias api='aptitude install'
 salias dpi='dpkg --install'
 
@@ -34,7 +34,7 @@ salias apc='aptitude clean'
 # Remove/Purge packages
 salias agar='apt-get autoremove'
 salias agp='apt-get purge'
-salias agr='apt-get remove'
+salias agr='noglob apt-get remove'
 salias dpp='dpkg --purge'
 salias dpr='dpkg --remove'
 
