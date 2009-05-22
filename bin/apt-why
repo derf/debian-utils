@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-## Copyright (C) 2008 by Daniel Friesel <derf@derf.homelinux.org>
+## Copyright © 2008-2009 by Daniel Friesel <derf@derf.homelinux.org>
 ## License: WTFPL <http://sam.zoy.org/wtfpl>
 use strict;
 use warnings;
@@ -13,12 +13,37 @@ GetOptions(
 	"not" => \$not,
 );
 my $packagename = shift or die("No packagename given");
-my $package = $cache->{$packagename};
+my @known;
 
-unless($package) {
-	print STDERR "E: Package not found: $packagename\n";
-	exit(100);
+sub revdeps {
+	my $name = shift;
+	my $package = $cache->{$name};
+	my @return;
+	my $rdeps = $package->{RevDependsList};
+	foreach (@$rdeps) {
+		if (
+			$cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed'
+			and $_->{DepType} !~ /^(Conflicts|Replaces|Obsoletes)$/
+		) {
+			next if ($_->{ParentPkg}{Name} ~~ @known);
+			push(@return, $_->{ParentPkg}{Name});
+		}
+	}
+	push(@known, @return);
+	return(@return);
 }
+
+sub recurse {
+	my $name = shift;
+	my $level = (shift) + 1;
+	printf("%s%s\n", "  " x ($level-1), $name);
+	return if ($level >= 5);
+	recurse($_, $level) foreach revdeps($name);
+}
+
+recurse($packagename, 0);
+
+__END__
 
 sub revdeps {
 	my $rdepsref = shift;
