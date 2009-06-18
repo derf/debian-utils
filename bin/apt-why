@@ -9,10 +9,12 @@ use Getopt::Long;
 
 my $cache = AptPkg::Cache->new;
 my $not = 0;
+my $max_depth = 5;
 my @deptypes;
 GetOptions(
 	'not' => \$not,
 	'deptype=s' => \@deptypes,
+	'depth=i' => \$max_depth,
 );
 my $packagename = shift or die("No packagename given");
 my @known;
@@ -41,10 +43,10 @@ sub revdeps {
 
 sub recurse {
 	my $name = shift;
-	my $level = (shift) + 1;
-	printf("%s%s\n", "  " x ($level-1), $name);
-	return if ($level >= 5);
-	recurse($_, $level) foreach revdeps($name);
+	my $depth = (shift) + 1;
+	printf("%s%s\n", "  " x ($depth-1), $name);
+	return if ($depth >= $max_depth);
+	recurse($_, $depth) foreach revdeps($name);
 }
 
 recurse($packagename, 0);
@@ -67,6 +69,10 @@ showing which packages require I<package> on the system.
 =head1 OPTIONS
 
 =over
+
+=item B<--depth>=I<integer> (default: 5)
+
+Specify the maximum recursion depth
 
 =item B<--deptype>=I<types>
 
