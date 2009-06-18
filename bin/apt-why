@@ -9,11 +9,15 @@ use Getopt::Long;
 
 my $cache = AptPkg::Cache->new;
 my $not = 0;
+my @deptypes;
 GetOptions(
-	"not" => \$not,
+	'not' => \$not,
+	'deptype=s' => \@deptypes,
 );
 my $packagename = shift or die("No packagename given");
 my @known;
+
+@deptypes = split(/,/, join(',', @deptypes));
 
 sub revdeps {
 	my $name = shift;
@@ -22,8 +26,10 @@ sub revdeps {
 	my $rdeps = $package->{RevDependsList};
 	foreach (@$rdeps) {
 		if (
-			$cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed'
-			and $_->{DepType} !~ /^(Conflicts|Replaces|Obsoletes)$/
+			$cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed' and (
+				(not @deptypes and $_->{DepType} !~ /^(Conflicts|Replaces|Obsoletes)$/) or
+				(@deptypes and "$_->{DepType}" ~~ @deptypes)
+			)
 		) {
 			next if ($_->{ParentPkg}{Name} ~~ @known);
 			push(@return, $_->{ParentPkg}{Name});
