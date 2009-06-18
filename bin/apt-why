@@ -8,11 +8,9 @@ use Switch;
 use Getopt::Long;
 
 my $cache = AptPkg::Cache->new;
-my $not = 0;
 my $max_depth = 5;
 my @deptypes;
 GetOptions(
-	'not' => \$not,
 	'deptype=s' => \@deptypes,
 	'depth=i' => \$max_depth,
 );
