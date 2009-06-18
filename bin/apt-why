@@ -57,23 +57,21 @@ apt-why - filtered reverse dependency displayer using AptPkg::Cache
 
 =head1 SYNOPSIS
 
-B<apt-why> [ B<--not> ] I<package>
+B<apt-why> [ I<options> ] I<package>
 
 =head1 DESCRIPTION
 
-B<apt-why> displays various informations based on a I<package>s reverse
-dependencies
+B<apt-why> recursively displays I<package>'s reverse dependency, thus
+showing which packages require I<package> on the system.
 
-The output is prefixed by two charactes, the former representing the desired
-package state, the latter the current state.
+=head1 OPTIONS
 
-The states are I<i>nstall, I<h>old, I<r>emove (deinstall), I<p>urge,
-I<u>npacked, halI<f> configured, I<h>alf installed, I<c>onfigfiles installed.
-An empty field means not installed.
+=over
 
-If B<--not> is specified, reverse dependencies prohibiting the installation of
-I<package> are shown. Else, reverse dependencies justifying the installation
-of I<package> are shown
+=item B<--deptype>=I<types>
+
+Only show reverse dependency which mach the specified I<types> (comma separated list).
+Right now, possible types are Depends, Suggests, Recommends.
 
 =head1 AUTHOR
 
