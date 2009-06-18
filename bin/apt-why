@@ -78,6 +78,8 @@ Specify the maximum recursion depth
 Only show reverse dependency which mach the specified I<types> (comma separated list).
 Right now, possible types are Depends, Suggests, Recommends.
 
+=back
+
 =head1 AUTHOR
 
 Daniel Friesel <derf@derf.homelinux.org>
