@@ -33,10 +33,10 @@ sub revdeps {
 	my $rdeps = $package->{RevDependsList};
 	foreach (@$rdeps) {
 		if (
-			($all or $cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
+			not $_->{ParentPkg}{Name} ~~ @known
+			and ($all or $cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
 			and "$_->{DepType}" ~~ @deptypes
 		) {
-			next if ($_->{ParentPkg}{Name} ~~ @known);
 			push(@return, $_->{ParentPkg}{Name});
 		}
 	}
