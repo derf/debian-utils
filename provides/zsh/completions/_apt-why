@@ -7,6 +7,7 @@
 typeset -a arguments
 
 arguments=(
+	'--all[consider all available packages]'
 	'--depth=-[recursion depth]:recursion depth'
 	'*--deptype=-[filter by dependency type]:dependency type:(Depends Recommends Suggests)'
 	'*:package:_deb_packages "" avail'
