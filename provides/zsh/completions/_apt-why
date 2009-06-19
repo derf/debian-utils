@@ -6,10 +6,22 @@
 
 typeset -a arguments
 
+function _apt-why_deptype {
+	typeset prefix=''
+	typeset -a keys used_prefixes
+	keys=(Depends Recommends Suggests)
+	if [[ -prefix *, ]] {
+		prefix=${words[$CURRENT]%,*},
+		used_prefixes=(${(s:,:)prefix})
+	}
+	_wanted expression expl 'dependency type' \
+	compadd -F used_prefixes -qS , -P "$prefix" $keys
+}
+
 arguments=(
 	'--all[consider all available packages]'
 	'--depth=-[recursion depth]:recursion depth'
-	'*--deptype=-[filter by dependency type]:dependency type:(Depends Recommends Suggests)'
+	'--deptype[filter by dependency type]:dependency type:_apt-why_deptype'
 	'*:package:_deb_packages "" avail'
 )
 

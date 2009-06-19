@@ -11,21 +11,15 @@ use Getopt::Long;
 my $cache = AptPkg::Cache->new;
 my $max_depth = 5;
 my $all = 0;
-my @deptypes;
-my @default_deptypes = ('Depends', 'Recommends', 'Suggests');
+my @deptypes = ('Depends', 'Recommends', 'Suggests');
 GetOptions(
 	'all!' => \$all,
-	'deptype=s' => \@deptypes,
+	'deptype=s' => sub {shift; @deptypes = split(/,/, shift)},
 	'depth=i' => \$max_depth,
 	'h|?|help' => \&usage,
 );
 my $packagename = shift or die("No packagename given");
 my @known;
-
-@deptypes = split(/,/, join(',', @deptypes));
-unless (@deptypes) {
-	@deptypes = @default_deptypes;
-}
 
 sub usage {
 	exec('perldoc', '-F', $0) or die("See perldoc -F $0");
