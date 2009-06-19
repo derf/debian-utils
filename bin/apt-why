@@ -17,6 +17,7 @@ GetOptions(
 	'all!' => \$all,
 	'deptype=s' => \@deptypes,
 	'depth=i' => \$max_depth,
+	'h|?|help' => \&usage,
 );
 my $packagename = shift or die("No packagename given");
 my @known;
@@ -24,6 +25,10 @@ my @known;
 @deptypes = split(/,/, join(',', @deptypes));
 unless (@deptypes) {
 	@deptypes = @default_deptypes;
+}
+
+sub usage {
+	exec('perldoc', '-F', $0) or die("See perldoc -F $0");
 }
 
 sub revdeps {
