@@ -51,6 +51,10 @@ sub recurse {
 	recurse($_, $depth) foreach revdeps($name);
 }
 
+if ($cache->{$packagename}->{Flags} =~ /Essential/) {
+	print "Essential: Yes\n";
+}
+
 recurse($packagename, 0);
 
 __END__
