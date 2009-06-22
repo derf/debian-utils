@@ -14,7 +14,7 @@ my $all = 0;
 my @deptypes = ('Depends', 'Recommends', 'Suggests');
 GetOptions(
 	'all!' => \$all,
-	'deptype=s' => sub {shift; @deptypes = split(/,/, shift)},
+	'deptype=s' => sub {@deptypes = split(/,/, $_[1])},
 	'depth=i' => \$max_depth,
 	'h|?|help' => \&usage,
 );
