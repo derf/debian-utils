@@ -93,7 +93,7 @@ Right now, possible types are Depends, Suggests, Recommends.
 
 =head1 AUTHOR
 
-Daniel Friesel <derf@derf.homelinux.org>
+Daniel Friesel E<lt>derf@derf.homelinux.orgE<gt>
 
 =head1 LICENSE
 
