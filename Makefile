@@ -1,21 +1,27 @@
+prefix = /usr/local
+
 build/apt-why.1: bin/apt-why
 	mkdir -p build
 	pod2man $< > $@
 
-install:
-	install -m 755 bin/apt-why /usr/local/bin
-	install -m 644 -D build/apt-why.1 /usr/local/share/man/man1/apt-why.1
+install: build/apt-why.1
+	mkdir -p $(prefix)/bin $(prefix)/share/man/man1
+	cp bin/apt-why $(prefix)/bin
+	cp build/apt-why.1 $(prefix)/share/man/man1
+	chmod 755 $(prefix)/bin/apt-why
+	chmod 644 $(prefix)/share/man/man1/apt-why.1
 
 install-completion:
-	install -m 644 provides/zsh/completions/_apt-why \
-	/usr/local/share/zsh/site-functions
+	mkdir -p $(prefix)/share/zsh/site-functions
+	cp provides/zsh/completions/_apt-why $(prefix)/share/zsh/site-functions
+	chmod 644 $(prefix)/share/zsh/site-functions/_apt-why
 
 clean:
-	$(RM) -r build
+	rm -rf build
 
 uninstall:
-	$(RM) /usr/local/bin/apt-why
-	$(RM) /usr/local/share/man/man1/apt-why.1
+	rm -f $(prefix)/bin/apt-why
+	rm -f $(prefix)/share/man/man1/apt-why.1
 
 uninstall-completion:
-	$(RM) /usr/share/zsh/functions/Completion/Debian/_apt-why
+	rm -f $(prefix)/share/zsh/site-functions/_apt-why
