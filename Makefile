@@ -8,7 +8,7 @@ install:
 
 install-completion:
 	install -m 644 provides/zsh/completions/_apt-why \
-	/usr/share/zsh/functions/Completion/Debian
+	/usr/local/share/zsh/site-functions
 
 clean:
 	$(RM) -r build
