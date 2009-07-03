@@ -50,6 +50,11 @@ sub recurse {
 	recurse($_, $depth) foreach revdeps($name);
 }
 
+unless ($cache->{$packagename}) {
+	print STDERR "No such package: $packagename\n";
+	exit(1);
+}
+
 if ($cache->{$packagename}->{Flags} =~ /Essential/) {
 	print "Essential: Yes\n";
 }
