@@ -11,17 +11,9 @@ install: build/apt-why.1
 	chmod 755 $(prefix)/bin/apt-why
 	chmod 644 $(prefix)/share/man/man1/apt-why.1
 
-install-completion:
-	mkdir -p $(prefix)/share/zsh/site-functions
-	cp provides/zsh/completions/_apt-why $(prefix)/share/zsh/site-functions
-	chmod 644 $(prefix)/share/zsh/site-functions/_apt-why
-
 clean:
 	rm -rf build
 
 uninstall:
 	rm -f $(prefix)/bin/apt-why
 	rm -f $(prefix)/share/man/man1/apt-why.1
-
-uninstall-completion:
-	rm -f $(prefix)/share/zsh/site-functions/_apt-why
