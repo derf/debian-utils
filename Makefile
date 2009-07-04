@@ -17,3 +17,5 @@ clean:
 uninstall:
 	rm -f $(prefix)/bin/apt-why
 	rm -f $(prefix)/share/man/man1/apt-why.1
+
+.PHONY: clean install uninstall
