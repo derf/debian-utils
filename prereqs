@@ -1,3 +1,0 @@
-require perlmodule AptPkg::Cache
-require perlmodule Switch
-require perlmodule Getopt::Long
