@@ -48,6 +48,7 @@ sub recurse {
 	printf("%s%s\n", "  " x ($depth-1), $name);
 	return if ($depth >= $max_depth);
 	recurse($_, $depth) foreach revdeps($name);
+	return;
 }
 
 unless ($cache->{$packagename}) {
