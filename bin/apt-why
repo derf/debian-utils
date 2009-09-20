@@ -29,7 +29,8 @@ sub revdeps {
 	my $package = $cache->{$name};
 	my @return;
 	my $rdeps = $package->{RevDependsList};
-	foreach (@$rdeps) {
+
+	foreach (@{$rdeps}) {
 		if (
 			not $_->{ParentPkg}{Name} ~~ @known
 			and ($all or $cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
@@ -38,6 +39,7 @@ sub revdeps {
 			push(@return, $_->{ParentPkg}{Name});
 		}
 	}
+
 	push(@known, @return);
 	return(@return);
 }
@@ -45,13 +47,21 @@ sub revdeps {
 sub recurse {
 	my $name = shift;
 	my $depth = (shift) + 1;
+
 	printf("%s%s\n", "  " x ($depth-1), $name);
-	return if ($depth >= $max_depth);
-	recurse($_, $depth) foreach revdeps($name);
+
+	if ($depth >= $max_depth) {
+		return;
+	}
+
+	foreach (revdeps($name)) {
+		recurse($_, $depth);
+	}
+
 	return;
 }
 
-unless ($cache->{$packagename}) {
+if (not defined $cache->{$packagename}) {
 	print STDERR "No such package: $packagename\n";
 	exit(1);
 }
