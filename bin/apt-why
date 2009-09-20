@@ -10,12 +10,15 @@ use Getopt::Long;
 my $cache = AptPkg::Cache->new;
 my $max_depth = 5;
 my $all = 0;
+my $tabwidth;
+my $tabsign = "\t";
 my @deptypes = ('Depends', 'Recommends', 'Suggests');
 GetOptions(
-	'all!' => \$all,
-	'deptype=s' => sub {@deptypes = split(/,/, $_[1])},
-	'depth=i' => \$max_depth,
-	'h|?|help' => \&usage,
+	'all!'       => \$all,
+	'deptype=s'  => sub {@deptypes = split(/,/, $_[1])},
+	'depth=i'    => \$max_depth,
+	'tabwidth=i' => \$tabwidth,
+	'h|?|help'   => \&usage,
 );
 my $packagename = shift or die("No packagename given");
 my @known;
@@ -48,7 +51,7 @@ sub recurse {
 	my $name = shift;
 	my $depth = (shift) + 1;
 
-	printf("%s%s\n", "  " x ($depth-1), $name);
+	printf("%s%s\n", $tabsign x ($depth-1), $name);
 
 	if ($depth >= $max_depth) {
 		return;
@@ -59,6 +62,10 @@ sub recurse {
 	}
 
 	return;
+}
+
+if (defined $tabwidth) {
+	$tabsign = ' ' x $tabwidth;
 }
 
 if (not defined $cache->{$packagename}) {
@@ -103,6 +110,10 @@ Specify the maximum recursion depth
 
 Only show reverse dependency which mach the specified I<types> (comma separated list).
 Right now, possible types are Depends, Suggests, Recommends.
+
+=item B<--tabwidth>=I<i>
+
+Indent each recursion level with I<i> spaces (by default: one tab)
 
 =back
 
