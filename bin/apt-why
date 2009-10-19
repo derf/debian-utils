@@ -12,7 +12,7 @@ my $max_depth = 5;
 my $all = 0;
 my $tabwidth;
 my $tabsign = "\t";
-my @deptypes = ('Depends', 'Recommends', 'Suggests');
+my @deptypes = qw/Depends Recommends Suggests/;
 GetOptions(
 	'all!'       => \$all,
 	'deptype=s'  => sub {@deptypes = split(/,/, $_[1])},
@@ -20,7 +20,7 @@ GetOptions(
 	'tabwidth=i' => \$tabwidth,
 	'h|?|help'   => \&usage,
 );
-my $packagename = shift or die("No packagename given");
+my $packagename = shift or die('No packagename given');
 my @known;
 
 sub usage {
@@ -33,13 +33,13 @@ sub revdeps {
 	my @return;
 	my $rdeps = $package->{RevDependsList};
 
-	foreach (@{$rdeps}) {
+	foreach my $dependency (@{$rdeps}) {
 		if (
-			not $_->{ParentPkg}{Name} ~~ @known
-			and ($all or $cache->{$_->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
-			and "$_->{DepType}" ~~ @deptypes
+			not $dependency->{ParentPkg}{Name} ~~ @known
+			and ($all or $cache->{$dependency->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
+			and "$dependency->{DepType}" ~~ @deptypes
 		) {
-			push(@return, $_->{ParentPkg}{Name});
+			push(@return, $dependency->{ParentPkg}{Name});
 		}
 	}
 
