@@ -20,7 +20,7 @@ GetOptions(
 	'tabwidth=i' => \$tabwidth,
 	'h|?|help'   => \&usage,
 );
-my $packagename = shift or die('No packagename given');
+my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
 my @known;
 
 sub usage {
@@ -69,8 +69,7 @@ if (defined $tabwidth) {
 }
 
 if (not defined $cache->{$packagename}) {
-	print STDERR "No such package: $packagename\n";
-	exit(1);
+	die("No such package: $packagename\n");
 }
 
 if ($cache->{$packagename}->{Flags} =~ /Essential/) {
