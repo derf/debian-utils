@@ -13,13 +13,6 @@ my $all = 0;
 my $tabwidth;
 my $tabsign = "\t";
 my @deptypes = qw/Depends Recommends Suggests/;
-GetOptions(
-	'all!'       => \$all,
-	'deptype=s'  => sub {@deptypes = split(/,/, $_[1])},
-	'depth=i'    => \$max_depth,
-	'tabwidth=i' => \$tabwidth,
-	'h|?|help'   => \&usage,
-);
 my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
 my @known;
 
@@ -63,6 +56,14 @@ sub recurse {
 
 	return;
 }
+
+GetOptions(
+	'all!'       => \$all,
+	'deptype=s'  => sub {@deptypes = split(/,/, $_[1])},
+	'depth=i'    => \$max_depth,
+	'tabwidth=i' => \$tabwidth,
+	'h|?|help'   => \&usage,
+);
 
 if (defined $tabwidth) {
 	$tabsign = ' ' x $tabwidth;
