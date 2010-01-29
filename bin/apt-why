@@ -13,7 +13,6 @@ my $all = 0;
 my $tabwidth;
 my $tabsign = "\t";
 my @deptypes = qw/Depends Recommends Suggests/;
-my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
 my @known;
 
 sub usage {
@@ -64,6 +63,8 @@ GetOptions(
 	'tabwidth=i' => \$tabwidth,
 	'h|?|help'   => \&usage,
 );
+
+my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
 
 if (defined $tabwidth) {
 	$tabsign = ' ' x $tabwidth;
