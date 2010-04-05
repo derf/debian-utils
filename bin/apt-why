@@ -10,7 +10,6 @@ use Getopt::Long;
 my $cache = AptPkg::Cache->new;
 my $max_depth = 5;
 my $all = 0;
-my $tabwidth;
 my $tabsign = "\t";
 my @deptypes = qw/Depends Recommends Suggests/;
 my @known;
@@ -58,17 +57,13 @@ sub recurse {
 
 GetOptions(
 	'all!'       => \$all,
-	'deptype=s'  => sub {@deptypes = split(/,/, $_[1])},
+	'deptype=s'  => sub { @deptypes = split(/,/, $_[1]) },
 	'depth=i'    => \$max_depth,
-	'tabwidth=i' => \$tabwidth,
+	'tabwidth=i' => sub { $tabsign = ' ' x $_[1] },
 	'h|?|help'   => \&usage,
 );
 
 my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
-
-if (defined $tabwidth) {
-	$tabsign = ' ' x $tabwidth;
-}
 
 if (not defined $cache->{$packagename}) {
 	die("No such package: $packagename\n");
