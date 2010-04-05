@@ -15,7 +15,7 @@ my @deptypes = qw/Depends Recommends Suggests/;
 my @known;
 
 sub usage {
-	exec('perldoc', '-F', $0) or die("See perldoc -F $0");
+	exec('perldoc', '-F', $0) or die("See perldoc -F $0\n");
 }
 
 sub revdeps {
@@ -27,9 +27,9 @@ sub revdeps {
 	foreach my $dependency (@{$rdeps}) {
 		if (
 			not $dependency->{ParentPkg}{Name} ~~ @known
-			and ($all or $cache->{$dependency->{ParentPkg}{Name}}->{CurrentState} eq 'Installed')
-			and "$dependency->{DepType}" ~~ @deptypes
-		) {
+			and ($all or $cache->{ $dependency->{ParentPkg}{Name} }->{CurrentState} eq 'Installed')
+			and "$dependency->{DepType}" ~~ @deptypes )
+		{
 			push(@return, $dependency->{ParentPkg}{Name});
 		}
 	}
