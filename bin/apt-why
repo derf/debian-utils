@@ -14,10 +14,6 @@ my $tabsign = "\t";
 my @deptypes = qw/Depends Recommends Suggests/;
 my @known;
 
-sub usage {
-	exec('perldoc', '-F', $0) or die("See perldoc -F $0\n");
-}
-
 sub revdeps {
 	my $name = shift;
 	my $package = $cache->{$name};
@@ -60,7 +56,7 @@ GetOptions(
 	'deptype=s'  => sub { @deptypes = split(/,/, $_[1]) },
 	'depth=i'    => \$max_depth,
 	'tabwidth=i' => sub { $tabsign = ' ' x $_[1] },
-	'h|?|help'   => \&usage,
+	'h|?|help'   => sub { exec('perldoc', '-F', $0) or die("See perldoc -F $0\n") },
 );
 
 my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
