@@ -83,7 +83,7 @@ B<apt-why> [ I<options> ] I<package>
 
 =head1 DESCRIPTION
 
-B<apt-why> recursively displays I<package>'s reverse dependency, thus
+B<apt-why> recursively displays I<package>'s reverse dependencies, thus
 showing which installed packages require I<package> on the system.
 
 =head1 OPTIONS
@@ -100,7 +100,7 @@ Specify the maximum recursion depth
 
 =item B<--deptype>=I<types>
 
-Only show reverse dependency which mach the specified I<types> (comma separated list).
+Only show reverse dependencies which mach the specified I<types> (comma separated list).
 Right now, possible types are Depends, Suggests, Recommends.
 
 =item B<--tabwidth>=I<i>
