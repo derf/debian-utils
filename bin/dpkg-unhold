@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "${1}" install | dpkg --set-selections
