@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-echo "# Documentation"
-podchecker -warnings -warnings bin/*
-
-echo "# Invalid invocation / package name"
-! bin/apt-why
-! bin/apt-why ntA-a54Ertn5

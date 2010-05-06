@@ -4,8 +4,8 @@ build/apt-why.1: bin/apt-why
 	mkdir -p build
 	pod2man $< > $@
 
-test: test/main
-	sh $<
+test:
+	prove test
 
 install: build/apt-why.1
 	mkdir -p $(prefix)/bin $(prefix)/share/man/man1
