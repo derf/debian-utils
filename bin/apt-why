@@ -7,45 +7,48 @@ use 5.010;
 use AptPkg::Cache;
 use Getopt::Long;
 
-my $cache = AptPkg::Cache->new;
+my $cache     = AptPkg::Cache->new;
 my $max_depth = 5;
-my $all = 0;
-my $tabsign = "\t";
-my @deptypes = qw/Depends Recommends Suggests/;
+my $all       = 0;
+my $tabsign   = "\t";
+my @deptypes  = qw/Depends Recommends Suggests/;
 my @known;
 
 sub revdeps {
-	my $name = shift;
+	my $name    = shift;
 	my $package = $cache->{$name};
 	my @return;
 	my $rdeps = $package->{RevDependsList};
 
-	foreach my $dependency (@{$rdeps}) {
+	foreach my $dependency ( @{$rdeps} ) {
 		if (
 			not $dependency->{ParentPkg}{Name} ~~ @known
-			and ($all or $cache->{ $dependency->{ParentPkg}{Name} }->{CurrentState} eq 'Installed')
-			and "$dependency->{DepType}" ~~ @deptypes )
+			and (  $all
+				or $cache->{ $dependency->{ParentPkg}{Name} }->{CurrentState} eq
+				'Installed' )
+			and "$dependency->{DepType}" ~~ @deptypes
+		)
 		{
-			push(@return, $dependency->{ParentPkg}{Name});
+			push( @return, $dependency->{ParentPkg}{Name} );
 		}
 	}
 
-	push(@known, @return);
-	return(@return);
+	push( @known, @return );
+	return (@return);
 }
 
 sub recurse {
-	my $name = shift;
+	my $name  = shift;
 	my $depth = (shift) + 1;
 
-	printf("%s%s\n", $tabsign x ($depth-1), $name);
+	printf( "%s%s\n", $tabsign x ( $depth - 1 ), $name );
 
-	if ($depth >= $max_depth) {
+	if ( $depth >= $max_depth ) {
 		return;
 	}
 
-	foreach (revdeps($name)) {
-		recurse($_, $depth);
+	foreach ( revdeps($name) ) {
+		recurse( $_, $depth );
 	}
 
 	return;
@@ -53,23 +56,25 @@ sub recurse {
 
 GetOptions(
 	'all!'       => \$all,
-	'deptype=s'  => sub { @deptypes = split(/,/, $_[1]) },
+	'deptype=s'  => sub { @deptypes = split( /,/, $_[1] ) },
 	'depth=i'    => \$max_depth,
-	'tabwidth=i' => sub { $tabsign = ' ' x $_[1] },
-	'h|?|help'   => sub { exec('perldoc', '-F', $0) or die("See perldoc -F $0\n") },
+	'tabwidth=i' => sub { $tabsign = q{ } x $_[1] },
+	'h|?|help'   =>
+		sub { exec( 'perldoc', '-F', $0 ) or die("See perldoc -F $0\n") },
 );
 
-my $packagename = shift or die("Usage: $0 [options] <package>; see $0 --help\n");
+my $packagename = shift
+	or die("Usage: $0 [options] <package>; see $0 --help\n");
 
-if (not defined $cache->{$packagename}) {
+if ( not defined $cache->{$packagename} ) {
 	die("No such package: $packagename\n");
 }
 
-if ($cache->{$packagename}->{Flags} =~ /Essential/) {
+if ( $cache->{$packagename}->{Flags} =~ /Essential/ ) {
 	print "Essential: Yes\n";
 }
 
-recurse($packagename, 0);
+recurse( $packagename, 0 );
 
 __END__
 
@@ -108,6 +113,23 @@ Right now, possible types are Depends, Suggests, Recommends.
 Indent each recursion level with I<i> spaces (by default: one tab)
 
 =back
+
+=head1 EXIT STATUS
+
+Zero on success, non-zero on error (i.e. no such package).
+
+=head1 CONFIGURATION
+
+None.
+
+=head1 DEPENDENCIES
+
+This program requires the perl module B<AptPkg::Cache>. On Debian, it is
+available via the package B<libapt-pkg-perl>.
+
+=head1 BUGS AND LIMITATIONS
+
+There may be problems with virtual packages and "Provides: " stuff.
 
 =head1 AUTHOR
 
