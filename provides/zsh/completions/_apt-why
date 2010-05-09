@@ -22,7 +22,6 @@ arguments=(
 	'--all[consider all available packages]'
 	'--depth=-[recursion depth]:recursion depth'
 	'--deptype[filter by dependency type]:dependency type:_apt-why_deptype'
-	'--tabwidth=-[spaces per recursion level]:spaces per recursion level'
 	'*:package:_deb_packages "" avail'
 )
 
