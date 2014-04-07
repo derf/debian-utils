@@ -1,8 +1,8 @@
 #compdef apt-why
 ## Completion for apt-why
-## Daniel Friesel <derf@derf.homelinux.org>
-## https://derf.homelinux.org/~derf/dotfiles/completion/_apt-why
-## see also: https://derf.homelinux.org/~derf/code/apt-why
+## Daniel Friesel <derf@finalrewind.org>
+## https://finalrewind.org/~derf/dotfiles/completion/_apt-why
+## see also: https://finalrewind.org/~derf/code/apt-why
 
 typeset -a arguments
 
